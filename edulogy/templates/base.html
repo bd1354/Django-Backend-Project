@@ -4,6 +4,56 @@
 <!--[if gt IE 9]><!--> <html class="no-js " lang="en"> <!--<![endif]-->
 <head>
 
+    <script type="text/javascript">
+		var user = '{{request.user}}'
+
+		function getToken(name) {
+		    var cookieValue = null;
+		    if (document.cookie && document.cookie !== '') {
+		        var cookies = document.cookie.split(';');
+		        for (var i = 0; i < cookies.length; i++) {
+		            var cookie = cookies[i].trim();
+		            // Does this cookie string begin with the name we want?
+		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		                break;
+		            }
+		        }
+		    }
+		    return cookieValue;
+		}
+		var csrftoken = getToken('csrftoken')
+
+		function getCookie(name) {
+		    // Split cookie string and get all individual name=value pairs in an array
+		    var cookieArr = document.cookie.split(";");
+
+		    // Loop through the array elements
+		    for(var i = 0; i < cookieArr.length; i++) {
+		        var cookiePair = cookieArr[i].split("=");
+
+		        /* Removing whitespace at the beginning of the cookie name
+		        and compare it with the given string */
+		        if(name == cookiePair[0].trim()) {
+		            // Decode the cookie value and return
+		            return decodeURIComponent(cookiePair[1]);
+		        }
+		    }
+
+		    // Return null if not found
+		    return null;
+		}
+		var cart = JSON.parse(getCookie('cart'))
+
+		if (cart == undefined){
+			cart = {}
+			console.log('Cart Created!', cart)
+			document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+		}
+		console.log('Cart:', cart)
+	
+	</script>
+
     <!-- Basic -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -53,14 +103,12 @@
                 <div class="modal-content">
                     <!-- Begin # DIV Form -->
                     <div id="div-forms">
-                        <form id="login-form">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span class="flaticon-add" aria-hidden="true"></span>
-                            </button>
-                            <div class="modal-body">
-                                <input class="form-control" type="text" placeholder="What you are looking for?" required>
-                            </div>
-                        </form><!-- End # Login Form -->
+                        <form class="d-flex" method=POST action="{% url 'search-venues' %}">
+                            {% csrf_token %}
+                    
+                            <input class="form-control me-2" type="search" placeholder="Search Products" aria-label="Search" name="searched">
+                            <button class="btn btn-outline-secondary" type="submit">Search</button>
+                          </form>
                     </div><!-- End # DIV Form -->
                 </div>
             </div>
@@ -100,13 +148,13 @@
                             <span class="icon-bar"></span>
                         </button>
                         <div class="logo-normal">
-                            <a class="navbar-brand" href="home.html"><img {% block img %} src="{% static 'images/logo.png' %}" {% endblock %} alt=""></a>
+                            <a class="navbar-brand" href="/home.html/"><img {% block img %} src="{% static 'images/logo.png' %}" {% endblock %} alt=""></a>
                         </div>
                     </div>
 
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="home.html">Home</a></li>
+                            <li><a href="/home.html/">Home</a></li>
                             <li class="dropdown yamm-fw yamm-half"><a href="#" data-toggle="dropdown" class="dropdown-toggle active">Mega Menu <b class="fa fa-angle-down"></b></a>
                                 <ul class="dropdown-menu">
                                     <li>
@@ -144,27 +192,30 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li><a href="events.html">Events</a></li>
+                            <li><a href="/events.html/">Events</a></li>
                             <li class="dropdown hassubmenu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Shop <span class="fa fa-angle-down"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="shop.html">Shop Layout</a></li>
-                                    <li><a href="shop-single.html">Shop Single</a></li>
+                                    <li><a href="/store/">Shop</a></li>
+                                    
                                 </ul>
                             </li>
                             <li class="dropdown hassubmenu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="fa fa-angle-down"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="blog.html">Blog Right Sidebar</a></li>
-                                    <li><a href="blog-1.html">Blog Left Sidebar</a></li>
-                                    <li><a href="blog-2.html">Blog Grid Sidebar</a></li>
-                                    <li><a href="blog-3.html">Blog Grid Fullwidth</a></li>
-                                    <li><a href="blog-single.html">Blog Single</a></li>
+                                    <li><a href="/blog-3.html/">Blog</a></li>
                                 </ul>
                             </li>
-                            <li><a href="page-contact.html">Contact</a></li>
+                            <li class="dropdown hassubmenu">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Login/Register <span class="fa fa-angle-down"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="/login.html/">Login</a></li>
+                                    <li><a href="/register.html/">Register</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="/page-contact.html/">Contact</a></li>
                             <li class="iconitem"><a href="#" data-toggle="modal" data-target="#login-modal"><i class="fa fa-search"></i></a></li>
-                            <li class="iconitem"><a class="shopicon" href="shop-cart.html"><i class="fa fa-shopping-basket"></i> &nbsp;(0)</a></li>
+                            <li class="iconitem"><a class="shopicon" href="{% url 'cart' %}"><i class="fa fa-shopping-basket"></i> &nbsp;{{cartItems}}</a></li>
                         </ul>
                     </div>
                 </nav><!-- end navbar -->
@@ -198,7 +249,7 @@
                     <div class="widget clearfix">
                         <h3 class="widget-title">Join us today</h3>
                         <p>Would you like to earn your profits by joining our team? Join us without losing time.</p>
-                        <a href="#" class="readmore">Became a Teacher</a>
+                        <a href="/readmore.html/" class="readmore">Became a Teacher</a>
                     </div><!-- end widget -->
                 </div><!-- end col -->
 
@@ -207,16 +258,16 @@
                         <h3 class="widget-title">Popular Tags</h3>
                         <div class="tags-widget">   
                             <ul class="list-inline">
-                                <li><a href="#">course</a></li>
-                                <li><a href="#">web design</a></li>
-                                <li><a href="#">development</a></li>
-                                <li><a href="#">language</a></li>
-                                <li><a href="#">teacher</a></li>
-                                <li><a href="#">speaking</a></li>
-                                <li><a href="#">material</a></li>
-                                <li><a href="#">css3</a></li>
-                                <li><a href="#">html</a></li>
-                                <li><a href="#">learning</a></li>
+                                <li><a href="/readmore.html/">course</a></li>
+                                <li><a href="/readmore.html/">web design</a></li>
+                                <li><a href="/readmore.html/">development</a></li>
+                                <li><a href="/readmore.html/">language</a></li>
+                                <li><a href="/readmore.html/">teacher</a></li>
+                                <li><a href="/readmore.html/">speaking</a></li>
+                                <li><a href="/readmore.html/">material</a></li>
+                                <li><a href="/readmore.html/">css3</a></li>
+                                <li><a href="/readmore.html/">html</a></li>
+                                <li><a href="/readmore.html/">learning</a></li>
                             </ul>
                         </div><!-- end list-widget -->
                     </div><!-- end widget -->
@@ -227,12 +278,12 @@
                         <h3 class="widget-title">Support</h3>
                         <div class="list-widget">   
                             <ul>
-                                <li><a href="#">Terms of Use</a></li>
-                                <li><a href="#">Copyrights</a></li>
-                                <li><a href="#">Create a Ticket</a></li>
-                                <li><a href="#">Pricing & Plans</a></li>
-                                <li><a href="#">Carrier</a></li>
-                                <li><a href="#">Trademark</a></li>
+                                <li><a href="/readmore.html/">Terms of Use</a></li>
+                                <li><a href="/readmore.html/">Copyrights</a></li>
+                                <li><a href="/readmore.html/">Create a Ticket</a></li>
+                                <li><a href="/readmore.html/">Pricing & Plans</a></li>
+                                <li><a href="/readmore.html/">Carrier</a></li>
+                                <li><a href="/readmore.html/">Trademark</a></li>
                             </ul>
                         </div><!-- end list-widget -->
                     </div><!-- end widget -->
@@ -275,6 +326,7 @@
 <script src="{% static 'js/carousel.js' %} "></script>
 {% endblock %}>
 
+<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
 
 </body>
 

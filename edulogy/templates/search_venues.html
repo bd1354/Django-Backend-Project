@@ -1,0 +1,64 @@
+{% extends 'searchbase.html' %}
+
+{% block content %}
+
+	{% if searched %}
+		<h1>You Searched For {{ searched }}</h1>
+		<br/>
+
+		{% for venue in venues %}
+			
+			<div class="card">
+  <div class="card-header">
+    Product
+  </div>
+  <div class="card-body">
+	<h5 class="card-title"><a href="{% url 'storesingle' venue.id %}">{{ venue }}</a></h5>
+    <p class="card-text">
+    	<ul>
+    {% if venue.price %}
+		<li>{{ venue.price }}₺</li>
+	{% endif %}
+
+	{% if venue.image %}
+		<img src="{{ venue.image.url }}" alt="" class="img-responsive">
+	{% endif %}
+
+	{% if venue.phone %}
+		<li>{{ venue.phone }}</li>
+	{% endif %}
+
+	{% if venue.email_address %}
+		<li>{{ venue.email_address }}</li>
+	{% endif %}
+
+	{% if venue.web %}
+		<li><a href="{{ venue.web }}">{{ venue.web }}</a></li>
+	{% endif %}
+
+	{% if venue.owner %}
+		<li>Owner ID: {{ venue.owner }} </li>
+	{% endif %}
+	
+
+	</ul>
+
+
+
+    </p>
+  </div>
+</div>
+	<br/>
+
+
+		{% endfor %}
+	
+	{% else %}
+		<h1>Hey! You Forgot To Search For A Product...</h1>
+	{% endif %}
+
+	
+
+	
+	
+{% endblock %}

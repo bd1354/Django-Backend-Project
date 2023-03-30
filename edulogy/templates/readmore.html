@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block header %} class="header header-normal" {% endblock %}
+{% block img %} src="{% static 'images/logo-dark.png' %}" {% endblock %}
+
+{% block script %} 
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAkADq7R0xf6ami9YirAM1N-yl7hdnYBhM "></script> 
+<script src="{% static 'js/map.js' %}"></script>
+{% endblock %}>
+
+{% block content %}
+
+<section class="section db p120">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tagline-message page-title text-center">
+                    <h3>TEMPLATE DOSYASINDA VAR OLMAYAN KISIM SAYFASINA HOŞGELDİNİZ</h3>
+                    <ul class="breadcrumb">
+                        <li><a href="javascript:void(0)">Edulogy</a></li>
+                        <li class="active">Get in touch</li>
+                    </ul>
+                </div>
+            </div><!-- end col -->
+        </div><!-- end row -->
+    </div><!-- end container -->
+</section><!-- end section -->
+
+<section class="section gb nopadtop">
+    <h1>EĞER BURAYI OKUYORSANIZ ANA TEMPLATE'TE BULUNMAYAN BİR SAYFAYA TIKLAMIŞSINIZ DEMEKTİR</h1>
+</section>
+
+{% endblock %}

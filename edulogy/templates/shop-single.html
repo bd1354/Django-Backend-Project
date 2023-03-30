@@ -11,7 +11,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="tagline-message page-title">
-                    <h3>Single Shop</h3>
+                    <h3>{{product.name}}</h3>
                 </div>
             </div><!-- end col -->
             <div class="col-md-6 text-right">
@@ -32,9 +32,9 @@
                     <div class="row">
                         <div class="col-md-12">
                         <div class="image-wrap entry">
-                            <img src="{% static 'upload/single_shop_01.jpg' %}" alt="" class="img-responsive">
+                            <img src="{{ product.image.url }}" alt="" class="img-responsive">
                             <div class="magnifier">
-                                <a rel="prettyPhoto[inline]" href="upload/single_shop_01.jpg" title=""><i class="flaticon-add"></i></a>
+                                <a rel="prettyPhoto[inline]" href="{{ product.image.url }}" title=""><i class="flaticon-add"></i></a>
                             </div>
                         </div><!-- end image-wrap -->
                         </div>
@@ -45,27 +45,27 @@
                     <div class="row">
                         <div class="col-md-4 col-sm-4 col-xs-4">
                             <div class="image-wrap entry">
-                                <img src="{% static 'upload/single_shop_02.jpg' %}" alt="" class="img-responsive">
+                                <img src="{{ product.image2.url }}" alt="" class="img-responsive">
                                 <div class="magnifier">
-                                    <a rel="prettyPhoto[inline]" href="upload/single_shop_02.jpg" title=""><i class="flaticon-add"></i></a>
+                                    <a rel="prettyPhoto[inline]" href="{{ product.image2.url }}" title=""><i class="flaticon-add"></i></a>
                                 </div>
                             </div><!-- end image-wrap -->
                         </div>
 
                         <div class="col-md-4 col-sm-4 col-xs-4">
                             <div class="image-wrap entry">
-                                <img src="{% static 'upload/single_shop_03.jpg' %}" alt="" class="img-responsive">
+                                <img src="{{ product.image3.url }}" alt="" class="img-responsive">
                                 <div class="magnifier">
-                                    <a rel="prettyPhoto[inline]" href="upload/single_shop_03.jpg" title=""><i class="flaticon-add"></i></a>
+                                    <a rel="prettyPhoto[inline]" href="{{ product.image3.url }}" title=""><i class="flaticon-add"></i></a>
                                 </div>
                             </div><!-- end image-wrap -->
                         </div>
 
                         <div class="col-md-4 col-sm-4 col-xs-4">
                             <div class="image-wrap entry">
-                                <img src="{% static 'upload/single_shop_04.jpg' %}" alt="" class="img-responsive">
+                                <img src="{{ product.image4.url }}" alt="" class="img-responsive">
                                 <div class="magnifier">
-                                    <a rel="prettyPhoto[inline]" href="upload/single_shop_04.jpg" title=""><i class="flaticon-add"></i></a>
+                                    <a rel="prettyPhoto[inline]" href="{{ product.image4.url }}" title=""><i class="flaticon-add"></i></a>
                                 </div>
                             </div><!-- end image-wrap -->
                         </div>
@@ -74,14 +74,14 @@
 
                 <div class="col-md-6">
                     <div class="shop-desc">
-                        <h3>Brown leather bag</h3>
-                        <small>$20.00</small>
+                        <h3>{{product.name}}</h3>
+                        <small>₺{{product.price}}</small>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla convallis consequat condimentum. In a tincidunt purus. Curabitur facilisis luctus aliquet. Aenean a cursus erat, sit amet interdum arcu. Mauris aliquam magna turpis, lobortis pellentesque velit elementum et. Nulla scelerisque a lorem nec posuere. Nunc convallis posuere tincidunt. Pellentesque a aliquet odio. Integer euismod, enim id lacinia auctor, tortor turpis malesuada enim, in semper turpis magna quis enim.</p>
                         <div class="shop-meta">
-                            <a href="#" class="btn btn-primary">Add to Cart</a>
+                            <button data-product="{{product.id}}" data-action="add" class="btn btn-primary add-btn update-cart">Add to Cart</button>
                             <ul class="list-inline">
                                 <li> SKU: product-111</li>
-                                <li>Categories: <a href="#">Bags</a>
+                                <li>Categories: <a href="#">{{product.category}}</a>
                             </ul>
                         </div><!-- end shop meta -->
                     </div><!-- end desc -->
@@ -111,15 +111,15 @@
                                     <tbody>
                                         <tr>
                                             <td><strong>Weight</strong></td>
-                                            <td>4.5 kg</td>
+                                            <td>{{product.weight}}</td>
                                         </tr>
                                         <tr>
                                             <td><strong>Colors</strong></td>
-                                            <td>Brown, Black</td>
+                                            <td>{{product.colors}}</td>
                                         </tr>
                                         <tr>
                                             <td><strong>Size</strong></td>
-                                            <td>50cm x 30cm</td>
+                                            <td>{{product.size}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -165,13 +165,15 @@
             <div class="related-products">
                 <div class="text-widget">
                     <h3>Related Products</h3>
-                </div><!-- end title -->        
+                </div><!-- end title -->    
+                
+                {% for suggestProduct in suggestProducts|slice:":4" %}
 
                 <div class="row blog-grid shop-grid">
                     <div class="col-md-3">
                         <div class="course-box shop-wrapper">
                             <div class="image-wrap entry">
-                                <img src="{% static 'upload/shop_01.jpg' %}" alt="" class="img-responsive">
+                                <img src="{{ suggestProduct.image.url }}" alt="" class="img-responsive">
                                 <div class="magnifier">
                                     <a href="shop-single.html" title=""><i class="flaticon-add"></i></a>
                                 </div>
@@ -179,126 +181,34 @@
                             <!-- end image-wrap -->
                             <div class="course-details shop-box text-center">
                                 <h4>
-                                    <a href="shop-single.html" title="">Brown leather bag</a>
-                                    <small>Bags</small>
+                                    <a href="shop-single.html" title="">{{suggestProduct.name}}</a>
+                                    <small>{{suggestProduct.category}}</small>
                                 </h4>
                             </div>
                             <!-- end details -->
                             <div class="course-footer clearfix">
                                 <div class="pull-left">
                                     <ul class="list-inline">
-                                        <li><a href="#"><i class="fa fa-shopping-basket"></i> Add Cart</a></li>
+                                        <li data-product="{{product.id}}" data-action="add" class="btn btn-primary add-btn update-cart"><i class="fa fa-shopping-basket"></i> Add Cart</li>
                                     </ul>
                                 </div><!-- end left -->
 
                                 <div class="pull-right">
                                     <ul class="list-inline">
-                                        <li><a href="#">$441.00</a></li>
+                                        <li><a href="#">₺{{suggestProduct.price}}</a></li>
                                     </ul>
                                 </div><!-- end left -->
                             </div><!-- end footer -->
                         </div><!-- end box -->
                     </div><!-- end col -->
 
-                    <div class="col-md-3">
-                        <div class="course-box shop-wrapper">
-                            <div class="image-wrap entry">
-                                <img src="{% static 'upload/shop_02.jpg' %}" alt="" class="img-responsive">
-                                <div class="magnifier">
-                                    <a href="shop-single.html" title=""><i class="flaticon-add"></i></a>
-                                </div>
-                            </div>
-                            <!-- end image-wrap -->
-                            <div class="course-details shop-box text-center">
-                                <h4>
-                                    <a href="shop-single.html" title="">Long coat jacket</a>
-                                    <small>Jackets</small>
-                                </h4>
-                            </div>
-                            <!-- end details -->
-                            <div class="course-footer clearfix">
-                                <div class="pull-left">
-                                    <ul class="list-inline">
-                                        <li><a href="#"><i class="fa fa-shopping-basket"></i> Add Cart</a></li>
-                                    </ul>
-                                </div><!-- end left -->
+                  {% endfor %}
 
-                                <div class="pull-right">
-                                    <ul class="list-inline">
-                                        <li><a href="#">$122.00</a></li>
-                                    </ul>
-                                </div><!-- end left -->
-                            </div><!-- end footer -->
-                        </div><!-- end box -->
-                    </div><!-- end col -->
-
-                    <div class="col-md-3">
-                        <div class="course-box shop-wrapper">
-                            <div class="image-wrap entry">
-                                <img src="{% static 'upload/shop_03.jpg' %}" alt="" class="img-responsive">
-                                <div class="magnifier">
-                                    <a href="shop-single.html" title=""><i class="flaticon-add"></i></a>
-                                </div>
-                            </div>
-                            <!-- end image-wrap -->
-                            <div class="course-details shop-box text-center">
-                                <h4>
-                                    <a href="shop-single.html" title="">Style own glasses</a>
-                                    <small>Glasses</small>
-                                </h4>
-                            </div>
-                            <!-- end details -->
-                            <div class="course-footer clearfix">
-                                <div class="pull-left">
-                                    <ul class="list-inline">
-                                        <li><a href="#"><i class="fa fa-shopping-basket"></i> Add Cart</a></li>
-                                    </ul>
-                                </div><!-- end left -->
-
-                                <div class="pull-right">
-                                    <ul class="list-inline">
-                                        <li><a href="#">$52.00</a></li>
-                                    </ul>
-                                </div><!-- end left -->
-                            </div><!-- end footer -->
-                        </div><!-- end box -->
-                    </div><!-- end col -->
-
-                    <div class="col-md-3">
-                        <div class="course-box shop-wrapper">
-                            <div class="image-wrap entry">
-                                <img src="{% static 'upload/shop_04.jpg' %}" alt="" class="img-responsive">
-                                <div class="magnifier">
-                                    <a href="shop-single.html" title=""><i class="flaticon-add"></i></a>
-                                </div>
-                            </div>
-                            <!-- end image-wrap -->
-                            <div class="course-details shop-box text-center">
-                                <h4>
-                                    <a href="shop-single.html" title="">Printed white t-shirt</a>
-                                    <small>T-Shirts</small>
-                                </h4>
-                            </div>
-                            <!-- end details -->
-                            <div class="course-footer clearfix">
-                                <div class="pull-left">
-                                    <ul class="list-inline">
-                                        <li><a href="#"><i class="fa fa-shopping-basket"></i> Add Cart</a></li>
-                                    </ul>
-                                </div><!-- end left -->
-
-                                <div class="pull-right">
-                                    <ul class="list-inline">
-                                        <li><a href="#">$22.00</a></li>
-                                    </ul>
-                                </div><!-- end left -->
-                            </div><!-- end footer -->
-                        </div><!-- end box -->
-                    </div><!-- end col -->
                 </div><!-- end row -->
             </div><!-- end related -->
         </div><!-- end boxed -->
     </div><!-- end container -->
 </section>
+
 
 {% endblock %}
